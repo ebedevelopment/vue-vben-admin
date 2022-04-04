@@ -12,7 +12,7 @@
   import { useTitle } from '/@/hooks/web/useTitle';
   import { useLocale } from '/@/locales/useLocale';
 
-  import 'dayjs/locale/zh-cn';
+  import 'dayjs/locale/en';
   // support Multi-language
   const { getAntdLocale } = useLocale();
 
