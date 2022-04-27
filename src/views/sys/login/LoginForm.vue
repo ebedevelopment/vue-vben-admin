@@ -8,13 +8,17 @@
     v-show="getShow"
     @keypress.enter="handleLogin"
   >
-    <FormItem name="account" class="enter-x">
+    <FormItem name="username" class="enter-x">
       <Input
         size="large"
-        v-model:value="formData.account"
+        v-model:value="formData.username"
         :placeholder="t('sys.login.userName')"
         class="fix-auto-fill"
-      />
+      >
+        <template #prefix>
+          <user-outlined type="user" />
+        </template>
+      </Input>
     </FormItem>
     <FormItem name="password" class="enter-x">
       <InputPassword
@@ -22,6 +26,28 @@
         visibilityToggle
         v-model:value="formData.password"
         :placeholder="t('sys.login.password')"
+      >
+        <template #prefix>
+          <lock-outlined type="lock" />
+        </template>
+      </InputPassword>
+    </FormItem>
+    <!-- added by mohamed hassan to support captcha display -->
+    <FormItem name="captcha" style="width: 100%">
+      <Input
+        v-model:value="formData.captcha"
+        :placeholder="t('sys.login.captcha')"
+        :max-length="6"
+        size="large"
+      />
+    </FormItem>
+    <FormItem>
+      <img
+        v-if="picPath"
+        :src="picPath"
+        :alt="t('sys.login.captcha')"
+        :style="{ height: '38px', width: '40%', background: '#ccc' }"
+        @click="loginVerify()"
       />
     </FormItem>
 
@@ -91,6 +117,8 @@
     AlipayCircleFilled,
     GoogleCircleFilled,
     TwitterCircleFilled,
+    UserOutlined,
+    LockOutlined,
   } from '@ant-design/icons-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
 
@@ -117,10 +145,14 @@
   const formRef = ref();
   const loading = ref(false);
   const rememberMe = ref(false);
+  const picPath = ref(''); // added by mohamed hassan
+  const captchaId = ref(''); // added by mohamed hassan
 
   const formData = reactive({
-    account: 'vben',
+    username: 'admin', // account: 'vben',
     password: '123456',
+    captcha: '', // added by mohamed hassan
+    captchaId: '', // added by mohamed hassan
   });
 
   const { validForm } = useFormValid(formRef);
@@ -135,10 +167,13 @@
     try {
       loading.value = true;
       const userInfo = await userStore.login({
+        username: data.username,
         password: data.password,
-        username: data.account,
+        captcha: data.captcha, // added by mohamed hassan
+        captchaId: captchaId.value, // added by mohamed hassan
         mode: 'none', //不要默认的错误提示
       });
+      console.log('userStore.login() got' + userInfo);
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
@@ -156,4 +191,28 @@
       loading.value = false;
     }
   }
+
+  // added by mohamed hassan
+  const loginVerify = () => {
+    userStore.getCaptchaCode().then((captchaInfo) => {
+      console.log(JSON.stringify(captchaInfo));
+      if (captchaInfo) {
+        console.log('captchaInfo.picPath = ' + captchaInfo.picPath);
+        picPath.value = captchaInfo.picPath;
+        captchaId.value = captchaInfo.captchaId;
+      }
+    });
+  };
+
+  // async function loginVerify() {
+  //   console.log('loginVerify() called to get captcha data');
+  //   const captchaInfo = await userStore.getCaptchaCode();
+  //   console.log('captchaInfo received' + JSON.stringify(captchaInfo));
+  //   if (captchaInfo) {
+  //     picPath.value = captchaInfo.picPath;
+  //     formData.captchaId = captchaInfo.captchaId;
+  //   }
+  // }
+
+  loginVerify();
 </script>

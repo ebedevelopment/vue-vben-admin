@@ -89,6 +89,7 @@ export default {
     // placeholder
     accountPlaceholder: 'Please input username',
     passwordPlaceholder: 'Please input password',
+    captchaPlaceholder: 'Please enter verification code',
     smsPlaceholder: 'Please input sms code',
     mobilePlaceholder: 'Please input mobile',
     policyPlaceholder: 'Register after checking',
@@ -96,6 +97,7 @@ export default {
 
     userName: 'Username',
     password: 'Password',
+    captcha: 'Verification Code',
     confirmPassword: 'Confirm Password',
     email: 'Email',
     smsCode: 'SMS code',

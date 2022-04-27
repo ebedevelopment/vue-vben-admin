@@ -4,6 +4,8 @@
 export interface LoginParams {
   username: string;
   password: string;
+  captcha: string; // added by mohamed hassan 5/4/2022 to add support for using captcha code for login
+  captchaId: string; // added by mohamed hassan 5/4/2022 to add support for using captcha code for login
 }
 
 export interface RoleInfo {
@@ -35,4 +37,14 @@ export interface GetUserInfoModel {
   avatar: string;
   // 介绍
   desc?: string;
+}
+
+// added by mohamed hassan
+/**
+ * @description: Captcha parameters
+ */
+export interface CaptchaResultModel {
+  captchaId: string;
+  picPath: string;
+  captchaLength: number; // added by mohamed hassan 5/4/2022 to add support for using captcha code for login
 }

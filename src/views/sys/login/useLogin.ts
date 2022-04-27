@@ -43,6 +43,7 @@ export function useFormRules(formData?: Recordable) {
 
   const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
+  const getCaptchaFormRule = computed(() => createRule(t('sys.login.captchaPlaceholder'))); // added by mohamed hassan
   const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
   const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
 
@@ -65,6 +66,7 @@ export function useFormRules(formData?: Recordable) {
   const getFormRules = computed((): { [k: string]: ValidationRule | ValidationRule[] } => {
     const accountFormRule = unref(getAccountFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
+    const captchaFormRule = unref(getCaptchaFormRule); // added by mohamed hassan
     const smsFormRule = unref(getSmsFormRule);
     const mobileFormRule = unref(getMobileFormRule);
 
@@ -101,6 +103,7 @@ export function useFormRules(formData?: Recordable) {
         return {
           account: accountFormRule,
           password: passwordFormRule,
+          captcha: captchaFormRule, // added by mohamed hassan
         };
     }
   });
